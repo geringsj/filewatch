@@ -9,7 +9,7 @@ Single header folder/file watcher in C++11 for windows and linux, with optional 
 Drop [FileWatch.hpp](https://github.com/ThomasMonkman/filewatch/blob/master/FileWatch.hpp) in to your include path, and you should be good to go.
 
 #### Compiler Support:
-
+ 
 Works on:
 
 - Clang 4 and higher
