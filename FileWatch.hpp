@@ -23,6 +23,9 @@
 #ifndef FILEWATCHER_H
 #define FILEWATCHER_H
 
+#include <iostream>
+#include <type_traits>
+
 #include <cstdio>
 #include <fstream>
 #ifdef _WIN32
@@ -744,7 +747,15 @@ namespace filewatch {
             }
 #elif _WIN32
             static StringType absolute_path_of(const StringType& path) {
+                  if constexpr (1 //__cplusplus >= 201703L // C++17
+                                    && std::is_same<StringType, std::filesystem::path>::value
+                  ) {
+                        std::cout << "FileWatch: C++17 filesystem::absolute(): "<< path.string() << std::endl;
+                        return std::filesystem::absolute(path);
+                  }
+
                   constexpr size_t size = IsWChar<C>::value? MAX_PATH : 32767 * sizeof(wchar_t);
+                  std::cout << "FileWatch: IsWChar<C>::value = " << IsWChar<C>::value << std::endl;
                   char buf[size];
 
                   DWORD length = IsWChar<C>::value? 
@@ -756,7 +767,9 @@ namespace filewatch {
                               size / sizeof(TCHAR),
                               buf,
                               nullptr);
-                  return StringType{std::basic_string<StringType::value_type>((C*)buf, length)};
+                  auto string = std::basic_string<StringType::value_type>((C*)buf, length);
+                  auto result = StringType{string};
+                  return result;
             }
 #endif
 
