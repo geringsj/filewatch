@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.13)
 
 # Project name
-project( FileWatch VERSION 0.0.1 LANGUAGES C CXX)
+project(FileWatch VERSION 0.0.1 LANGUAGES C CXX)
 
 option(FileWatch_Build_Example "Build the example")
 option(FileWatch_Build_Tests "Build the unit tests")
@@ -46,3 +46,13 @@ add_subdirectory(tests)
 if(FileWatch_Build_Example)
     add_subdirectory(example)
 endif()
+
+
+set(PROJECT_SOURCES
+    "FileWatch.hpp"
+)
+add_library(${PROJECT_NAME} INTERFACE)
+target_sources(${PROJECT_NAME} INTERFACE ${PROJECT_SOURCES})
+target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
+# add_subdirectory(example)
